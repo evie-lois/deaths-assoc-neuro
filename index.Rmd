@@ -1,0 +1,24 @@
+---
+title: "Deaths Associated with Neurological Conditions"
+author: "Evie Massheder"
+date: "2024-12-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+
+```
+
+## Project Description
+
+Data us available from this link:
+
+## Import Data
+
+## Wrangle Data
+
+## Visualise the Data

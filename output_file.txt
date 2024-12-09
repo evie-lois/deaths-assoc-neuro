@@ -1,0 +1,68 @@
+Table.1:	Number.of.deaths.in.England.2001.to.2014,.age.20+	X3	X4	X5	X6	X7	X8	X9	X10	X11
+Year of the
+registration
+of death	All cause deaths	All deaths with a mention of neurological condition	Epilepsy	Motor neurone disease and spinal muscular atrophy	Multiple sclerosis and inflammatory disorders	Neuromuscular diseases	Parkinsonism and other extrapyramidal disorders/ tic disorder	Traumatic brain and spine injury	Tumours of the nervous system	Deaths with mention of neurological condition as % of all deaths
+2001	492205	23051	1936	1574	1301	563	6963	1773	4995	4.6832112635995161E-2
+2002	495260	23144	1901	1585	1366	628	7057	1812	5048	4.6731009974558819E-2
+2003	498529	24301	2164	1561	1471	656	7472	1931	5084	4.8745408993258167E-2
+2004	475298	23257	1996	1649	1312	610	7045	1919	5115	4.8931407243455682E-2
+2005	474278	24167	2215	1720	1449	704	7194	2119	5139	5.0955346864075497E-2
+2006	464789	24461	2176	1789	1450	800	7408	2038	5286	5.2628181820137739E-2
+2007	465341	25093	2187	1792	1522	855	7895	2095	5286	5.3923896669324213E-2
+2008	470418	26232	2405	1843	1600	865	8343	2074	5473	5.5763172327589504E-2
+2009	454063	26609	2519	1919	1556	915	8353	2275	5462	5.8602000162972977E-2
+2010	456135	27389	2522	2069	1530	934	8827	2165	5580	6.0045819768270357E-2
+2011	448162	27339	2704	2038	1576	923	7677	2371	5539	6.1002494633636946E-2
+2012	462176	29248	2997	2257	1652	951	8656	2331	5624	6.3283251402063284E-2
+2013	469243	30512	3108	2279	1621	1003	8992	2756	5489	6.5023878885779859E-2
+2014	464556	31925	3291	1846	1701	1028	10067	2902	5605	6.8721531957395873E-2
+2001-2014	6590453	366728	34121	25921	21107	11435	111949	30561	74725	5.5645340312722051E-2
+Year of the
+registration
+of death	Ataxia	Central nervous system infections	Cranial nerve disorder	Development disorders	Functional disorders	Headaches and migraine	Peripheral nerve disorders	Rare and other neurological diseases	Sleep disorders	Spondylotic myelopathy and radiculopathy
+2001	80	664	21	273	35	17	*	3473	6	45
+2002	107	612	27	255	15	11	*	3273	7	58
+2003	105	786	27	297	25	10	*	3355	6	67
+2004	79	672	19	281	21	16	*	3129	*	71
+2005	92	651	19	266	19	13	4	3232	4	86
+2006	106	682	22	277	17	6	*	3074	4	80
+2007	94	649	18	270	19	15	*	3055	4	84
+2008	96	727	14	257	23	9	5	3215	5	99
+2009	110	735	27	286	25	15	*	3196	*	125
+2010	118	724	31	284	23	9	*	3371	4	108
+2011	121	720	27	303	17	13	*	4489	*	106
+2012	118	786	25	302	16	30	4	4889	8	125
+2013	137	827	33	330	24	10	NA	5295	7	136
+2014	162	811	22	352	11	11	5	5618	6	147
+2001-2014	1525	10046	332	4033	290	185	40	52664	67	1337
+Notes:	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+* numbers suppressed due to disclosure control	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+The sum of the condition group specific deaths may be more than the all neurological deaths value as there can be a mention of more than one neurological condition on a death certificate	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Table 2:	Directly age-standardised rate of mortality in persons (aged 20+) with a recorded mention of neurological conditions and per 100,000 population	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Year of the registration of death	All cause deaths	All deaths with a mention of neurological condition	Epilepsy	Motor neurone disease and spinal muscular atrophy	Multiple sclerosis and inflammatory disorders	Neuromuscular diseases	Parkinsonism and other extrapyramidal disorders/ tic disorder	Traumatic brain and spine injury	Tumours of the nervous system	NA
+2003-2005	1470.5800222124433	70.951856238975225	6.0735763651676429	4.9492702405390405	4.0892937868903738	1.922327765635397	22.065549544902265	5.7831206438795277	15.055346126394463	NA
+2006-2008	1351.2521447786032	72.243254357349841	6.2334291319853854	5.2932410304524167	4.2960623619802449	2.3809680477690622	22.977156472950607	5.8145687100242185	15.252685183167518	NA
+2009-2011	1247.2512726043469	74.370089808514479	6.8857121203692326	5.6350249291540973	4.2318866773501087	2.5137423224669373	23.051070609767706	6.1304053309181175	15.155461624245316	NA
+2012-2014	1213.4476311941983	79.797148790181666	8.0630325281120587	5.658029958975308	4.3291752559324799	2.5735131975064225	24.262836898274273	6.8676275493899697	14.595100364476307	NA
+Notes:	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Methodology: Directly age-standardised rate of mortality in persons (aged 20+) with a recorded mention of neurological conditions and  per 100,000 population using 2013 European Standard Populations
+
+
+
+	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Numerator: Number of deaths with a mention of neurological conditions (classified as either underlying cause of death or contributory cause) recorded as ICD codes defined as adult neurological 
+
+
+	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+conditions registered in the respective calendar years, in people aged 20+ aggregated into quinary age bands (20-24, 25-29,…, 90+). 
+
+
+	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Defining adult neurological conditions reference file is available on the NIN website: http://www.yhpho.org.uk/resource/view.aspx?RID=207314
+
+
+	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA
+Denominator: Population-years for people of aged 20+, aggregated into quinary age bands (20-24, 25-29,…, 90+). Source: ONS
+
+
+	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA

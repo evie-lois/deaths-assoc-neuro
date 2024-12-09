@@ -1,24 +1,161 @@
 ---
 title: "Deaths Associated with Neurological Conditions"
 author: "Evie Massheder"
-date: "2024-12-02"
+date: "2024-12-10"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+library(scales)
+
+library(dplyr)
+
+library(openxlsx)
+
+library(tidyr)
+
 library(tidyverse)
+
 library(here)
+
+library(plotly)
 
 ```
 
 ## Project Description
 
-Data us available from this link:
+Data is available from this link:
+
+https://www.gov.uk/government/publications/deaths-associated-with-neurological-conditions
+
+The URL for these pages is:
+
+https://evie-lois.github.io/deaths-assoc-neuro/
+
+The repository for these pages is:
+
+https://github.com/evie-lois/deaths-assoc-neuro.git
+
+## Research Question
+
+Which neurological condition has the highest rate of associated deaths from 2001 to 2014?
 
 ## Import Data
 
-## Wrangle Data
+```{r import}
+# Importing one sheet from Excel workbook as dataset
 
-## Visualise the Data
+# Specify the sheet by name from Excel workbook
+
+data <- read.xlsx("/Users/eviemassheder/Documents/Data Analysis and Visualisation/workbook.xlsx", sheet = "Deaths in England") 
+
+# Save the sheet to a new Excel file
+
+write.xlsx(data, "/Users/eviemassheder/Documents/Data Analysis and Visualisation/DeathsinEngland.xlsx")
+
+loc = "/Users/eviemassheder/Documents/Data Analysis and Visualisation/DeathsinEngland.xlsx"
+
+data <- read.xlsx(loc)
+
+
+```
+
+
+## Data Preparations
+```{r}
+#Split embedded table into two
+
+first_table <- data[1:16, ]
+
+second_table <-data[17:nrow(data), ]
+
+# Structure tables, exclude outliers 
+
+first_table <- first_table[-c(16), ]
+
+second_table <- second_table[-c(16:31),]
+
+# Swap the first row of each table to the column names
+
+colnames(first_table) <- first_table[1, ]
+
+first_table <- first_table[-1, ]
+
+colnames(second_table) <-second_table[1, ]
+
+second_table <- second_table[-1, ]
+
+# Clean data, removing outliers
+
+data1_cleaned <- first_table[, -c(2,11)]
+
+data2_cleaned <- second_table[, -c(8,10)]
+
+# Combine tables
+
+combined_table <- bind_cols(data1_cleaned, data2_cleaned)
+
+# Clean new dataset
+
+cleaned_dataset <- combined_table[,-c(10)]
+
+#Code columns
+
+cols <- c("year", "dwnc", "epi", "mndsma", "msid", "nmd", "poed", "tbsi", "totns", "at", "cnsi", "cnd", "dd", "fd", "ham", "raond", "smar")
+
+colnames(cleaned_dataset) <- cols
+
+#Reshape the data
+
+reshaped_dataset <- cleaned_dataset %>%
+  pivot_longer(cols = -year, 
+               names_to = "Condition",
+               values_to = "Deaths")
+
+#Show cleaned and reshaped dataset
+
+head(reshaped_dataset)
+
+```
+
+## Visualisation
+```{r}
+# Check 'Deaths' column is numeric for plot
+
+str(reshaped_dataset$Deaths) 
+reshaped_dataset$Deaths <- as.numeric(as.character(reshaped_dataset$Deaths))
+
+# Create the scatter plot
+
+ggplot(reshaped_dataset, aes(x = year, y = Deaths, color = Condition)) +
+  geom_point(size = 3) +
+  labs(title = "Deaths associated with Neurological Conditions (2001-2014)", 
+       x = "Year", 
+       y = "Number of Deaths") +
+  theme_minimal() +
+  scale_y_log10(labels = scales::comma) +
+ 
+#Colour Code Conditions
+  
+  scale_color_manual(values = c( "dwnc" = "red", "epi" = "green", "mndsma" = "lightcoral", "msid" = "pink", "nmd"= "purple", "poed" = "orange", "tbsi" = "magenta", "totns" = "cyan", "at" = "blue", "cnsi" = "dodgerblue", "cnd" = "darkgreen", "dd" = "lightblue", "fd" = "violet", "ham" = "gold", "raond"= "darkblue", "smar" = "darkgray"), 
+                     
+ #Label Disorders
+ 
+ labels = c( "dwnc" = "Deaths with Mention of Neurological Condition", "epi" = "Epliepsy", "mndsma" = "Motor Neurone Disease and Spinal Muscular Atrophy", "msid" = "Multiple Sclerosis and Inflammatory Disorders", "nmd" = "Neuromuscular Diseases", "poed" = "Parkinsonism and Other Etrapyrimidal Disorders", "tbsi" = "Traumatic brain and Spinal Injury", "totns" = "Tumours of the Nervous System", "at"= "Ataxia", "cnsi" = "CNS Infections", "cnd" = "Cranial Nerve Damage", "dd" = "Development Disorders", "fd" = "Functional Disorders", "ham" = "Headaches and Migraines", "raond" = "Rare and Other Neurological Diseases", "smar" = "Spondylotic Myelophathy and Radiculopathy")) +
+  
+# Flip the plot for horizontal view
+  
+  coord_flip()
+
+#Interactive Plot 
+  
+
+```
+
+## Summary
+
+From completing this module and code project, I have learnt how to use R efficiently after having no previous knowledge of the software. I have also understood my mistakes and learned how to correct them. In addition to this...
+
+If I was to do this project again with more time and data accessibility, I would have followed through with my previous choice of public health data looking into a comparison of the Western Diet and Mediterranean Diet. Comparing the effects on life expectancy and disease. I would have chosen data from individuals that follow either diet and compare their health to see if there was a correlation of disease and shorter life expectancy with the Western Diet to understand the effects of what we consume on our lives.

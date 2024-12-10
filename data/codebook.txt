@@ -1,0 +1,19 @@
+Codebook for dataset:
+
+1. Year:
+- Type: Numeric
+- Description: Year of death
+- Missing Values: 0 
+- Example Values: 2001, 2002, 2003
+
+2. Condition
+- Type: Factor
+- Description: Neurological Condition associated with death
+- Missing Values: 0 
+- Example Values: Eplilepsy, Neuromuscular Disease, Traumatic Brain and Spinal Injury
+
+3. Deaths
+- Type: Numeric
+- Description: Number of deaths
+- Missing Values: 0 
+- Example Values: 1936, 1901, 2164

@@ -8,7 +8,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 #Load libraries
-
 library(scales)
 
 library(dplyr)
@@ -24,6 +23,35 @@ library(tidyverse)
 library(here)
 
 library(plotly)
+
+```
+
+
+```{r codebook, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#Making and saving the codebook
+
+codebook <- "Codebook for dataset:
+
+1. Year:
+- Type: Numeric
+- Description: Year of death
+- Missing Values: 0 
+- Example Values: 2001, 2002, 2003
+
+2. Condition
+- Type: Factor
+- Description: Neurological Condition associated with death
+- Missing Values: 0 
+- Example Values: Eplilepsy, Neuromuscular Disease, Traumatic Brain and Spinal Injury
+
+3. Deaths
+- Type: Numeric
+- Description: Number of deaths
+- Missing Values: 0 
+- Example Values: 1936, 1901, 2164
+"
+cat(codebook, file = "/Users/eviemassheder/Documents/Data Analysis and Visualisation/deaths-assoc-neuro/data/codebook.txt")
 
 ```
 

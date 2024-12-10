@@ -1,6 +1,5 @@
 ---
 title: "Deaths Associated with Neurological Conditions"
-author: "Evie Massheder"
 date: "2024-12-10"
 output: html_document
 ---
@@ -8,11 +7,15 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+#Load libraries
+
 library(scales)
 
 library(dplyr)
 
 library(openxlsx)
+
+library(readxl)
 
 library(tidyr)
 
@@ -24,7 +27,12 @@ library(plotly)
 
 ```
 
-## Project Description
+## Data Origins
+
+The raw data for this project was downloaded from the **GOV.UK** website.
+
+More information about the variables can be found in the codebook.txt file in the data folder. 
+
 
 Data is available from this link:
 
@@ -38,33 +46,36 @@ The repository for these pages is:
 
 https://github.com/evie-lois/deaths-assoc-neuro.git
 
-## Research Question
 
-Which neurological condition has the highest rate of associated deaths from 2001 to 2014?
-
-## Import Data
-
-```{r import}
+```{r import,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 # Importing one sheet from Excel workbook as dataset
 
 # Specify the sheet by name from Excel workbook
 
-data <- read.xlsx("/Users/eviemassheder/Documents/Data Analysis and Visualisation/workbook.xlsx", sheet = "Deaths in England") 
+data <- read_excel("/Users/eviemassheder/Documents/Data Analysis and Visualisation/deaths-assoc-neuro/data/workbook.xlsx", sheet = "Deaths in England") 
 
 # Save the sheet to a new Excel file
 
-write.xlsx(data, "/Users/eviemassheder/Documents/Data Analysis and Visualisation/DeathsinEngland.xlsx")
+write.xlsx(data,"/Users/eviemassheder/Documents/Data Analysis and Visualisation/deaths-assoc-neuro/data/DeathsinEngland.xlsx")
 
-loc = "/Users/eviemassheder/Documents/Data Analysis and Visualisation/DeathsinEngland.xlsx"
+loc = "/Users/eviemassheder/Documents/Data Analysis and Visualisation/deaths-assoc-neuro/data/DeathsinEngland.xlsx"
 
 data <- read.xlsx(loc)
 
-
 ```
 
+## Research Question
 
-## Data Preparations
+**Which neurological condition(s) has the highest rate of associated deaths from 2001 to 2014? **
+
+The visualisation will attempt to show the number of deaths associated with neurological conditions between the years 2001 to 2014, in order to visually represent the neurological condition with the highest rate of associated deaths.
+
+## Data Preparation
+
+In order to have my data ready for visualisation I needed to clean and reshape the data. As the dataset I had contained a table with two tables embedded I had to make these into one complete dataset. In the process, I removed outliers and repeated columns in order to prepare the data. The columns were also renamed into codes so they would be easier to work with.
 ```{r}
+
 #Split embedded table into two
 
 first_table <- data[1:16, ]
@@ -77,7 +88,7 @@ first_table <- first_table[-c(16), ]
 
 second_table <- second_table[-c(16:31),]
 
-# Swap the first row of each table to the column names
+# Swap the first row of each table to become the column names
 
 colnames(first_table) <- first_table[1, ]
 
@@ -89,9 +100,13 @@ second_table <- second_table[-1, ]
 
 # Clean data, removing outliers
 
-data1_cleaned <- first_table[, -c(2,11)]
+data1_cleaned <- first_table[, -c(3,5,7,9,11,13,15,17,19)]
 
-data2_cleaned <- second_table[, -c(8,10)]
+data1_cleaned <- data1_cleaned[, -c(2,11)]
+
+data2_cleaned <- second_table[, -c(3,5,7,9,11,13,15,17,19)]
+
+data2_cleaned <- data2_cleaned[, -c(8,10)]
 
 # Combine tables
 
@@ -114,48 +129,95 @@ reshaped_dataset <- cleaned_dataset %>%
                names_to = "Condition",
                values_to = "Deaths")
 
+#Check for missing values in the dataset
+
+sum(is.na(reshaped_dataset))
+
+#Check structure and data types
+
+str(reshaped_dataset)
+
+#Check number of rows and columns
+
+dim(reshaped_dataset)
+
 #Show cleaned and reshaped dataset
 
 head(reshaped_dataset)
 
 ```
+Once the data is prepared, visualisation can begin.
 
 ## Visualisation
+
+I created my visualisation using ggplot and plotly. For my visualisation I wanted to represent the data so it would be clear as to which neurological condition had the highest rate of associated deaths. I chose a horizontal view as the data presented better this way. I included the use of ggplotly to allow for interaction of the data to view in more detail.
 ```{r}
-# Check 'Deaths' column is numeric for plot
+# Checking 'Deaths' column is numeric in order to plot data
 
 str(reshaped_dataset$Deaths) 
 reshaped_dataset$Deaths <- as.numeric(as.character(reshaped_dataset$Deaths))
 
-# Create the scatter plot
+# Creating the scatter plot
 
-ggplot(reshaped_dataset, aes(x = year, y = Deaths, color = Condition)) +
-  geom_point(size = 3) +
-  labs(title = "Deaths associated with Neurological Conditions (2001-2014)", 
+p <- ggplot(reshaped_dataset, aes(x = year, y = Deaths, color = Condition)) +
+  geom_point(size = 3) + #adjusting plot point size
+  labs(title = "Deaths associated with Neurological Conditions", subtitle = "Between the Years 2001 to 2014",
        x = "Year", 
-       y = "Number of Deaths") +
-  theme_minimal() +
+       y = "Number of Deaths", caption = "Source: GOV.UK") + #labeling the x and y axis and citing data source
+  theme_minimal() + #minimal for a clean look
+  theme(plot.title = element_text(size = 16, face = "bold"), 
+        #format title size and boldness
+        plot.subtitle = element_text(hjust = 0.5, size = 12, face = "italic"), 
+        #format subtitle size, potition and italics
+        legend.title = element_text(size = 11, face = "bold"), 
+        #format legend title size and boldness
+        axis.title = element_text(size = 14), 
+        #format axis title size
+        axis.text = element_text(size = 12), 
+        #format axis text size
+        plot.background = element_rect(fill = "snow")) + 
+  #fill background colour
+  
+#Colour code and rename labels  
+         
   scale_y_log10(labels = scales::comma) +
- 
-#Colour Code Conditions
   
-  scale_color_manual(values = c( "dwnc" = "red", "epi" = "green", "mndsma" = "lightcoral", "msid" = "pink", "nmd"= "purple", "poed" = "orange", "tbsi" = "magenta", "totns" = "cyan", "at" = "blue", "cnsi" = "dodgerblue", "cnd" = "darkgreen", "dd" = "lightblue", "fd" = "violet", "ham" = "gold", "raond"= "darkblue", "smar" = "darkgray"), 
+#Colour coding conditions, making sure they will be visable on the graph and not clash with other colours
+  
+  scale_color_manual(values = c( "dwnc" = "red", "epi" = "green", "mndsma" = "lightcoral", "msid" = "pink", "nmd"= "purple", "poed" = "orange", "tbsi" = "magenta", "totns" = "cyan", "at" = "blue", "cnsi" = "dodgerblue", "cnd" = "darkgreen", "dd" = "lightblue", "fd" = "violet", "ham" = "gold", "raond"= "darkblue", "smar" = "darkgray"),
                      
- #Label Disorders
+ #Renaming neurological conditions
  
- labels = c( "dwnc" = "Deaths with Mention of Neurological Condition", "epi" = "Epliepsy", "mndsma" = "Motor Neurone Disease and Spinal Muscular Atrophy", "msid" = "Multiple Sclerosis and Inflammatory Disorders", "nmd" = "Neuromuscular Diseases", "poed" = "Parkinsonism and Other Etrapyrimidal Disorders", "tbsi" = "Traumatic brain and Spinal Injury", "totns" = "Tumours of the Nervous System", "at"= "Ataxia", "cnsi" = "CNS Infections", "cnd" = "Cranial Nerve Damage", "dd" = "Development Disorders", "fd" = "Functional Disorders", "ham" = "Headaches and Migraines", "raond" = "Rare and Other Neurological Diseases", "smar" = "Spondylotic Myelophathy and Radiculopathy")) +
+labels = c( "dwnc" = "Deaths with Mention of Neurological Condition", "epi" = "Epliepsy", "mndsma" = "Motor Neurone Disease and Spinal Muscular Atrophy", "msid" = "Multiple Sclerosis and Inflammatory Disorders", "nmd" = "Neuromuscular Diseases", "poed" = "Parkinsonism and Other Etrapyrimidal Disorders", "tbsi" = "Traumatic brain and Spinal Injury", "totns" = "Tumours of the Nervous System", "at"= "Ataxia", "cnsi" = "CNS Infections", "cnd" = "Cranial Nerve Damage", "dd" = "Development Disorders", "fd" = "Functional Disorders", "ham" = "Headaches and Migraines", "raond" = "Rare and Other Neurological Diseases", "smar" = "Spondylotic Myelophathy and Radiculopathy")) +
   
-# Flip the plot for horizontal view
-  
-  coord_flip()
+# Ammend plot 
+  coord_flip() + #flip plot to horizontal
+  theme(axis.line = element_line(color = "black")) #adding black axis lines
 
-#Interactive Plot 
-  
+print(p) #print the ggplot
+
+ggplotly(p) #interactive plot
 
 ```
 
+The final output is saved in the figs folder
+```{r}
+#Saving the plot
+ggsave(here("figs","neurodeathsplot.png"))
+```
+
+
+
 ## Summary
 
-From completing this module and code project, I have learnt how to use R efficiently after having no previous knowledge of the software. I have also understood my mistakes and learned how to correct them. In addition to this...
+**Interpretation** 
 
-If I was to do this project again with more time and data accessibility, I would have followed through with my previous choice of public health data looking into a comparison of the Western Diet and Mediterranean Diet. Comparing the effects on life expectancy and disease. I would have chosen data from individuals that follow either diet and compare their health to see if there was a correlation of disease and shorter life expectancy with the Western Diet to understand the effects of what we consume on our lives.
+The visualisation shows the death rates associated with neurological conditions. The neurological conditions with the highest rate from 2001-2014 is Parkinsonism and Other Etrapyrimidal Disorders.This is an interesting analysis as disorders within this category such as Parkinson's disease affect a large number of individuals within the UK and achknowledging the number of deaths associated with the disorder could help to show the public the importance of donating to charities such as **Parkinson's UK** to make a difference for people living with Parkinson's disease. Furthmore, this visualisation creates a comparison for the different neurological conditions and how they were associated with a number of deaths. A limitation of this is that the data is from the years 2001-2014 so an updated dataset would be useful to compare the numbers of deaths within the last ten years.
+
+**Follow-ups**
+
+To investigate further, I would include the age of participants and run a regression analysis to test if there is a correlation between neurological disorder deaths and old age. I would also follow up this analysis with an up to date dataset to compare the results to see if there are any changes to the neuroloigcal conditions with the highest rate of associated deaths.
+
+**Conclusion**
+
+From completing this module and code project, I have learned how to use R efficiently after having no previous knowledge of the software. I have also been able to understand my mistakes and learn how to correct them within R. If I was to do this project again with more time and data accessibility, I would have followed through with my previous choice of public health data looking into a comparison of the Western and Mediterranean diet. By comparing the effects on life expectancy and disease. I would have chosen data from individuals that follow either diet and compare their health to see if there is a correlation of disease and shorter life expectancy when following the Western diet in order to understand the effects of what we consume on our health and present this data to show others that the cheap and convenient lifestyle of the Western diet can have a large impact on our lives.
